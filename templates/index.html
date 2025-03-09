@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Wordle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="index-header">
+            <h1>Multiplayer Wordle</h1>
+            <div class="theme-toggle">
+                <span class="theme-toggle-icon">☀️</span>
+                <label class="theme-toggle-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="theme-toggle-slider"></span>
+                </label>
+                <span class="theme-toggle-icon">🌙</span>
+            </div>
+        </header>
+        
+        <div class="card">
+            <form method="POST">
+                {% if error %}
+                <div class="error">{{ error }}</div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" value="{{ name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" name="create" value="true" class="btn btn-primary">Create New Game</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="room_id">Or Join Existing Game:</label>
+                    <input type="text" id="room_id" name="room_id" placeholder="Enter Room ID">
+                    <button type="submit" name="join" value="true" class="btn btn-secondary">Join Game</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="instructions">
+            <h2>How to Play</h2>
+            <p>1. Create a new game or join an existing one</p>
+            <p>2. Share the Room ID with a friend</p>
+            <p>3. Guess the 5-letter word</p>
+            <p>4. Both players can guess at the same time</p>
+            <p>5. First player to guess the word wins!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const themeToggle = document.getElementById("theme-toggle");
+            const body = document.body;
+
+            // Toggle dark mode
+            function toggleDarkMode() {
+                body.classList.toggle("dark");
+                const isDarkMode = body.classList.contains("dark");
+                localStorage.setItem("darkMode", isDarkMode);
+            }
+
+            // Initialize dark mode from localStorage
+            function initDarkMode() {
+                const isDarkMode = localStorage.getItem("darkMode") === "true";
+                if (isDarkMode) {
+                    body.classList.add("dark");
+                    themeToggle.checked = true;
+                }
+            }
+
+            // Dark mode toggle event listener
+            if (themeToggle) {
+                themeToggle.addEventListener("change", toggleDarkMode);
+            }
+
+            // Initialize dark mode
+            initDarkMode();
+        });
+    </script>
+</body>
+</html>
